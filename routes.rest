@@ -1,0 +1,10 @@
+### Arquivo para teste de rotas, necessário a instalação da extensão Rest Client
+###
+
+### Acessando via GET
+GET http://localhost:3000/subscribers
+###
+
+### Acessando via GET com parametro ID
+GET http://localhost:3000/subscribers/123
+###
