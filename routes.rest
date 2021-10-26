@@ -8,3 +8,13 @@ GET http://localhost:3000/subscribers
 ### Acessando via GET com parametro ID
 GET http://localhost:3000/subscribers/123
 ###
+
+### Enviando POST
+POST http://localhost:3000/subscribers
+Content-Type: application/json
+
+{
+    "userName": "Eduardo Amroginski",
+    "userChannel": "hcodebrasil"
+}
+###

@@ -1,15 +1,32 @@
 import express from "express";
+import Subscriber from "../models/subscriber.js";
+
 const router = express.Router();
 
-router.get("/", (request, response) => {
-  response.send("REST API ok");
+router.get("/", async (request, response) => {
+  try {
+    const subscribers = await Subscriber.find();
+    response.json(subscribers);
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
 });
 
-router.get("/:id", (request, response) => {
-  response.send("REST API ID ok");
-});
+router.get("/:id", (request, response) => {});
 
-router.post("/", (request, response) => {});
+router.post("/", async (request, response) => {
+  const subscriber = new Subscriber({
+    userName: request.body.userName,
+    userChannel: request.body.userChannel,
+  });
+
+  try {
+    const newSubscriber = await subscriber.save();
+    response.status(201).json(newSubscriber);
+  } catch (error) {
+    response.status(400).json({ message: error.message });
+  }
+});
 
 router.patch("/:id", (request, response) => {});
 
