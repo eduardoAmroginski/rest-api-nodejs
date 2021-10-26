@@ -1,11 +1,14 @@
+import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 
-const app = express();
-const port = 3000;
-const host = "localhost";
+dotenv.config();
 
-mongoose.connect("mongodb://localhost/subscribers", {
+const app = express();
+const port = process.env.PORT;
+const host = process.env.HOST;
+
+mongoose.connect(process.env.DATABASE_STRING, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -19,6 +22,8 @@ db.on("error", (err) => {
 db.once("open", () => {
   console.log("Database Connected");
 });
+
+app.use(express.json());
 
 app.listen(3000, () => {
   console.log(`Server Running at http://${host}:${port}`);
