@@ -1,4 +1,5 @@
 import express from "express";
+import subscriber from "../models/subscriber.js";
 import Subscriber from "../models/subscriber.js";
 
 const router = express.Router();
@@ -12,7 +13,7 @@ router.get("/", async (request, response) => {
   }
 });
 
-router.get("/:id", (request, response) => {});
+router.get("/:id", getSubscriber, (request, response) => {});
 
 router.post("/", async (request, response) => {
   const subscriber = new Subscriber({
@@ -28,10 +29,24 @@ router.post("/", async (request, response) => {
   }
 });
 
-router.patch("/:id", (request, response) => {});
+router.patch("/:id", getSubscriber, (request, response) => {});
 
-router.put("/:id", (request, response) => {});
+router.put("/:id", getSubscriber, (request, response) => {});
 
-router.delete("/:id", (request, response) => {});
+router.delete("/:id", getSubscriber, (request, response) => {});
+
+async function getSubscriber(request, response, next) {
+  try {
+    const subscriber = await Subscriber.findById(request.params.id);
+    if (subscriber == null) {
+      return response.status(404).json({ message: "Subscriber Not found!" });
+    }
+  } catch (error) {
+    return response.status(500).json({ message: error.message });
+  }
+
+  response.subscriber = subscriber;
+  next();
+}
 
 export default router;
