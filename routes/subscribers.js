@@ -4,6 +4,7 @@ import Subscriber from "../models/subscriber.js";
 const router = express.Router();
 
 router.get("/", async (request, response) => {
+  console.log("GET");
   try {
     const subscribers = await Subscriber.find();
     response.json(subscribers);
