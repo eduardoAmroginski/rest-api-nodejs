@@ -1,5 +1,4 @@
 import express from "express";
-import subscriber from "../models/subscriber.js";
 import Subscriber from "../models/subscriber.js";
 
 const router = express.Router();
@@ -13,7 +12,9 @@ router.get("/", async (request, response) => {
   }
 });
 
-router.get("/:id", getSubscriber, (request, response) => {});
+router.get("/:id", getSubscriber, (request, response) => {
+  response.json(response.subscriber);
+});
 
 router.post("/", async (request, response) => {
   const subscriber = new Subscriber({
@@ -29,11 +30,31 @@ router.post("/", async (request, response) => {
   }
 });
 
-router.patch("/:id", getSubscriber, (request, response) => {});
+router.patch("/:id", getSubscriber, async (request, response) => {
+  if (request.body.userName != null) {
+    response.subscriber.userName = request.body.userName;
+  }
 
-router.put("/:id", getSubscriber, (request, response) => {});
+  if (request.body.userChannel != null) {
+    response.subscriber.userChannel = request.body.userChannel;
+  }
 
-router.delete("/:id", getSubscriber, (request, response) => {});
+  try {
+    const updateSubscriber = await response.subscriber.save();
+    response.json(updateSubscriber);
+  } catch (error) {
+    return response.status(400).json({ message: error.message });
+  }
+});
+
+router.delete("/:id", getSubscriber, async (request, response) => {
+  try {
+    await response.subscriber.remove();
+    response.json({ message: "Subscriber was deleted" });
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+});
 
 async function getSubscriber(request, response, next) {
   try {
@@ -41,11 +62,10 @@ async function getSubscriber(request, response, next) {
     if (subscriber == null) {
       return response.status(404).json({ message: "Subscriber Not found!" });
     }
+    response.subscriber = subscriber;
   } catch (error) {
     return response.status(500).json({ message: error.message });
   }
-
-  response.subscriber = subscriber;
   next();
 }
 

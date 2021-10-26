@@ -6,7 +6,7 @@ GET http://localhost:3000/subscribers
 ###
 
 ### Acessando via GET com parametro ID
-GET http://localhost:3000/subscribers/123
+GET http://localhost:3000/subscribers/61785a3b324d7f7d09ffd56a
 ###
 
 ### Enviando POST
@@ -14,7 +14,20 @@ POST http://localhost:3000/subscribers
 Content-Type: application/json
 
 {
-    "userName": "Eduardo Amroginski",
+    "userName": "Genivaldo",
     "userChannel": "hcodebrasil"
+}
+###
+
+### Acessando via DELETE com parametro ID
+DELETE http://localhost:3000/subscribers/6178621fddbd8995f7cd9494
+###
+
+### Enviando POST
+PATCH http://localhost:3000/subscribers/61785a3b324d7f7d09ffd56a
+Content-Type: application/json
+
+{
+    "userName": "Vitinho da Silva"
 }
 ###
