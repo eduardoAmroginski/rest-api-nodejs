@@ -2,6 +2,9 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 
+//Importação de Rotas
+import subscribersRouter from "./routes/subscribers.js";
+
 dotenv.config();
 
 const app = express();
@@ -24,6 +27,8 @@ db.once("open", () => {
 });
 
 app.use(express.json());
+
+app.use("/subscribers", subscribersRouter);
 
 app.listen(3000, () => {
   console.log(`Server Running at http://${host}:${port}`);
